@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
+	"os"
 	"strings"
+	"time"
 )
 
 type deck []string
@@ -42,12 +45,25 @@ func saveToFile(filename string, d deck) {
 }
 
 func newDeckFromFile(filename string) deck {
-	var deckArray = []string{}
-	var d = deck{}
-	deckStr := string(ioutil.ReadFile(filename))
-	deckArray := strings.Split(deckStr, ",")
+	// var deckArray = []string{}
 
-	for _, card := range deckArray {
-
+	deckByte, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(2)
 	}
+	deckArray := strings.Split(string(deckByte), ",")
+
+	return deck(deckArray)
+}
+
+func (thisD deck) shuffle() deck {
+	randomFactor := rand.New(rand.NewSource(time.Now().Unix()))
+	shuffledDeck := make([]string, len(thisD))
+	shuffledI := randomFactor.Perm(len(thisD))
+	for i, randIndex := range shuffledI {
+		shuffledDeck[i] = thisD[randIndex]
+	}
+	return shuffledDeck
+
 }
