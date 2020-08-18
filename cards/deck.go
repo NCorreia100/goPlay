@@ -57,13 +57,11 @@ func newDeckFromFile(filename string) deck {
 	return deck(deckArray)
 }
 
-func (thisD deck) shuffle() deck {
-	randomFactor := rand.New(rand.NewSource(time.Now().Unix()))
-	shuffledDeck := make([]string, len(thisD))
-	shuffledI := randomFactor.Perm(len(thisD))
-	for i, randIndex := range shuffledI {
-		shuffledDeck[i] = thisD[randIndex]
-	}
-	return shuffledDeck
+func (thisD deck) shuffle() {
+	randomFactor := rand.New(rand.NewSource(time.Now().UnixNano()))
 
+	for i := range thisD {
+		newPosition := randomFactor.Intn(len(thisD) - 1)
+		thisD[i], thisD[newPosition] = thisD[newPosition], thisD[i]
+	}
 }
