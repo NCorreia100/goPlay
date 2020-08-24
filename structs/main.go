@@ -2,17 +2,51 @@ package main
 
 import "fmt"
 
+type contactInfo struct {
+	phone int
+	email string
+}
 type person struct {
 	name string
 	age  int
+	contactInfo
+}
+
+func (p person) print() {
+	fmt.Printf("\n%+v", p)
+}
+
+func (p *person) setContactInfo(contactInfo contactInfo) {
+	(*p).contactInfo = contactInfo
+}
+
+func updateSlice(s *string) {
+	*s = "thomas"
 }
 
 func main() {
+	guy := person{"Jimmy", 16, contactInfo{9876543210, "test@email.com"}}
+	// girlContact := contactInfo{12345678910, "email@email.com"}
 
-	guy := person{"Jimmy", 16}
-	girl := person{name: "Monica", age: 30}
+	girl := person{
+		name: "Monica",
+		age:  30,
+		contactInfo: contactInfo{
+			phone: 1234567890,
+			email: "email@email.com",
+		},
+	}
 
-	fmt.Println(guy)
-	fmt.Printf("%+v", girl)
+	guy.print()
+	girl.print()
 
+	// girlPointer := &girl
+	girl.setContactInfo(guy.contactInfo)
+	girl.print()
+
+	personName := "jake"
+
+	updateSlice(&personName)
+
+	fmt.Println("\n", personName)
 }
