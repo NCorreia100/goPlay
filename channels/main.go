@@ -14,6 +14,7 @@ func checkLink(link string, ch chan string) {
 	} else {
 		fmt.Println(link + " OK!")
 	}
+	time.Sleep(time.Second * 2) //wait 5 min in child go routine (not main routine)
 	ch <- link
 }
 func main() {
@@ -32,12 +33,12 @@ func main() {
 		// fmt.Println(<-ch) ---> if I print the channel here isntead, it will block the execution of the main routine
 	}
 
-	qty := 0
+	// qty := 0
 	for c := range ch {
-		if qty%5 == 0 {
-			time.Sleep(time.Second)
-		}
-		qty++
+		// if qty%5 == 0 {
+		// time.Sleep(time.Second * 2)
+		// }
+		// qty++
 
 		//restart go routines
 		go checkLink(c, ch)
