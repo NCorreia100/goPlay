@@ -1,3 +1,4 @@
 //builds
 *.exe
 *.txt
+*.pb.go
